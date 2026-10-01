@@ -1,4 +1,4 @@
-const CACHE_NAME = 'trading-journal-v6';
+const CACHE_NAME = 'trading-journal-v7';
 const APP_FILES = ['./', './index.html', './manifest.json'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)));
