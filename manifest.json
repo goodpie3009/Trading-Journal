@@ -1,0 +1,9 @@
+{
+  "name": "Trading Journal",
+  "short_name": "Journal",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f5f2",
+  "theme_color": "#101a17",
+  "lang": "vi"
+}
