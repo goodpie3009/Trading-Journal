@@ -1,0 +1,27 @@
+name: Calendar
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch calendar
+        run: |
+          U=https://cdn-nfs.faireconomy.media
+          curl -fsSL -A "Mozilla/5.0" "$U/ff_calendar_thisweek.json" -o this.json
+          curl -fsSL -A "Mozilla/5.0" "$U/ff_calendar_nextweek.json" -o next.json || echo '[]' > next.json
+          jq -s 'add' this.json next.json > calendar.new
+          test "$(jq length calendar.new)" -gt 0
+          mv calendar.new calendar.json
+          rm -f this.json next.json
+      - name: Commit
+        run: |
+          git config user.name "calendar-bot"
+          git config user.email "calendar-bot@users.noreply.github.com"
+          git add calendar.json
+          git diff --cached --quiet || (git commit -m "Update calendar" && git push)
